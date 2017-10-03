@@ -1,5 +1,7 @@
 extern crate libc;
 extern crate libloading as lib;
+use std::io;
+use std::io::prelude::*;
 
 fn dynamic_load() -> lib::Result<u32> {
 	let lib = lib::Library::new("/home/ubuntu/cpy/libmultiply.so")?;
@@ -10,7 +12,9 @@ fn dynamic_load() -> lib::Result<u32> {
 }
 
 fn main() {
-	println!("BEFORE");
-	dynamic_load().unwrap();
-	println!("AFTER");
+	let stdin = io::stdin();
+	for line in stdin.lock().lines() {
+		println!("Reloading...");
+		dynamic_load().unwrap();
+	}
 }
